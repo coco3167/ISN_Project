@@ -1,4 +1,4 @@
-# Licence cc
+#totoLicence cc
 import pygame,GAME
 pygame.init()
 
