@@ -1,3 +1,4 @@
+# Licence cc
 import pygame,GAME
 pygame.init()
 
