@@ -2,17 +2,29 @@ import pygame,GAME
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
+        #Variables generales
         self.image = pygame.transform.scale(pygame.image.load('assets/player.png'),(50,50))
         self.rect = self.image.get_rect()
         self.rect.x = 500
         self.vector = pygame.math.Vector2()
         self.key = {"left":False,"right":False,"jump":False}
+        self.listeCollided = []
 
+        #Variables pour le deplacement gauche droite
         self.vitesseMax = 200
         self.vitesseMin = 10
         self.acceleration = 5
 
-        self.enSaut = False
+        #Variables pour le saut
+        self.isJumping = False
+        self.onPlateforme = False
+        self.t = 0
+        self.vitesseAccelerationSaut = 500 #b
+        self.vitesseDescelerationSaut = 100 #a
+        self.hauteurMaxSaut = -self.vitesseAccelerationSaut/(2*-self.vitesseDescelerationSaut) #-b/2a
+        self.gravite = 100
+        self.accelerationGravite = 5
+
 
     def eventKey(self,keyWord,action):
         self.key[keyWord] = action
@@ -40,19 +52,62 @@ class Player(pygame.sprite.Sprite):
 
     def jump(self):
         #formule pour le saut.
-        pass
+        if self.t < self.hauteurMaxSaut:
+            self.t += 1
+            self.vector.y += -self.vitesseDescelerationSaut*self.t*self.t + self.vitesseAccelerationSaut*self.t
+        else:
+            self.isJumping = False
+
+    def inertie(self):
+        #Quand il tombe
+        if self.vector.y > self.gravite-self.accelerationGravite:
+            self.vector.y = self.gravite
+        else:
+            self.vector.y += self.accelerationGravite
+
+
+    def collisionLeftRight(self,allPlateforme):
+        self.listeCollided = pygame.sprite.spritecollide(self,allPlateforme,False)
+        for plateforme in self.listeCollided:
+            if self.vector.x > 0:
+                self.rect.x = plateforme.rect.x + self.rect.width
+            elif self.vector.x < 0:
+                self.rect.x = plateforme.rect.x + plateforme.rect.width
+    
+    def collisionUpBottom(self,allPlateforme):
+        self.listeCollided = pygame.sprite.spritecollide(self,allPlateforme,False)
+        for plateforme in self.listeCollided:
+            if self.vector.y > 0:
+                self.rect.y = plateforme.rect.y - self.rect.height - 1
+                self.onPlateforme = True
+            elif self.vector.y < 0:
+                self.rect.y = plateforme.rect.y + plateforme.rect.height - 1
+
 
 
     def update(self,allPlateforme):
-        #gravité si pas de collision avec une plateforme
-        if (pygame.sprite.spritecollideany(self,allPlateforme)==None):
-            pass
 
-
-        #Ici calculer le mouvement gauche droite
+        #Calcul du vecteur y en fonction de son état et détection d'un saut.
+        if not(self.onPlateforme):
+            if self.isJumping:
+                self.jump()
+            else:
+                self.inertie()
+        else:
+            #Saut à la prochaine actualisation
+            self.isJumping = self.key["jump"]
+            if self.isJumping:
+                self.onPlateforme = False
+            self.vector.y = 0
+        #Test des collisions
+        self.collisionUpBottom(allPlateforme)
+                
+        #Ici calcul du mouvement et de la collision gauche droite
         self.mouvement()
-        print(self.vector.x)
+        self.collisionLeftRight(allPlateforme)
+        
 
         #deplacement gauche droite
         self.rect.x = round(self.rect.x + self.vector.x/100)
-        self.rect.y += self.vector.y
+        self.rect.y = round(self.rect.y + self.vector.y/100)
+        print(self.vector, self.rect.y)
