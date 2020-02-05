@@ -14,15 +14,16 @@ class Player(pygame.sprite.Sprite):
         self.vitesseMax = 200
         self.vitesseMin = 10
         self.acceleration = 5
+        self.weightLeftRight = 2
 
         #Variables pour le saut
         self.isJumping = False
         self.onPlateforme = False
         self.t = 0
-        self.vitesseAccelerationSaut = 500 #b
-        self.vitesseDescelerationSaut = 100 #a
+        self.vitesseAccelerationSaut = 85 #b
+        self.vitesseDescelerationSaut = 12 #a
         self.hauteurMaxSaut = -self.vitesseAccelerationSaut/(2*-self.vitesseDescelerationSaut) #-b/2a
-        self.gravite = 100
+        self.gravite = 150
         self.accelerationGravite = 5
 
 
@@ -36,13 +37,13 @@ class Player(pygame.sprite.Sprite):
             if self.vector.x < self.vitesseMin:
                 self.vector.x = 0
             else:
-                self.vector.x /= 2
+                self.vector.x /= self.weightLeftRight
         elif not(self.key["left"]) and self.vector.x < 0:
             #déscélération à gauche
             if self.vector.x > -self.vitesseMin:
                 self.vector.x = 0
             else:
-                self.vector.x /= 2
+                self.vector.x /= self.weightLeftRight
         elif self.key["right"] and self.vector.x < self.vitesseMax:
             #accélération à droite
             self.vector.x += self.acceleration
@@ -54,9 +55,10 @@ class Player(pygame.sprite.Sprite):
         #formule pour le saut.
         if self.t < self.hauteurMaxSaut:
             self.t += 1
-            self.vector.y += -self.vitesseDescelerationSaut*self.t*self.t + self.vitesseAccelerationSaut*self.t
+            self.vector.y -= -self.vitesseDescelerationSaut*self.t*self.t + self.vitesseAccelerationSaut*self.t
         else:
             self.isJumping = False
+            self.t = 0
 
     def inertie(self):
         #Quand il tombe
@@ -81,7 +83,7 @@ class Player(pygame.sprite.Sprite):
                 self.rect.y = plateforme.rect.y - self.rect.height - 1
                 self.onPlateforme = True
             elif self.vector.y < 0:
-                self.rect.y = plateforme.rect.y + plateforme.rect.height - 1
+                self.rect.y = plateforme.rect.y + plateforme.rect.height + 1
 
 
 
@@ -106,8 +108,10 @@ class Player(pygame.sprite.Sprite):
         self.mouvement()
         self.collisionLeftRight(allPlateforme)
         
+        #Déplacement plus lourd (lent) si en l'air
+        if not(self.onPlateforme):
+            self.weightLeftRight = 1.5
 
         #deplacement gauche droite
         self.rect.x = round(self.rect.x + self.vector.x/100)
         self.rect.y = round(self.rect.y + self.vector.y/100)
-        print(self.vector, self.rect.y)
