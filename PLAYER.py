@@ -98,8 +98,7 @@ class Player(pygame.sprite.Sprite):
         else:
             #Saut à la prochaine actualisation
             self.isJumping = self.key["jump"]
-            if self.isJumping:
-                self.onPlateforme = False
+            self.onPlateforme = False
             self.vector.y = 0
         #Test des collisions
         self.collisionUpBottom(allPlateforme)
