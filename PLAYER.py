@@ -3,7 +3,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         #Variables generales
-        self.image = pygame.transform.scale(pygame.image.load('assets/player.png'),(90,250))
+        self.image = pygame.transform.scale(pygame.image.load('assets/player.png'),(45,125))
         self.rect = self.image.get_rect()
         self.rect.x = 500
         self.vector = pygame.math.Vector2()
