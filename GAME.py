@@ -8,5 +8,5 @@ class Game():
         self.allSprites.add(self.player)
         #Création d'une liste de toute les plateformes et ajout d'une plateforme
         self.allPlateforme = pygame.sprite.Group()
-        self.allPlateforme.add(PLATEFORME.Plateforme(100,780))
+        self.allPlateforme.add(PLATEFORME.Plateforme(100,680))
         self.allSprites.add(self.allPlateforme)
