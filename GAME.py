@@ -10,3 +10,6 @@ class Game():
         self.allPlateforme = pygame.sprite.Group()
         self.allPlateforme.add(PLATEFORME.Plateforme(100,680))
         self.allSprites.add(self.allPlateforme)
+        #Musique
+        pygame.mixer.music.load('assets/Theme.ogg')
+        pygame.mixer.music.play(loops = -1)
