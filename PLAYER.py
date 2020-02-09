@@ -72,25 +72,28 @@ class Player(pygame.sprite.Sprite):
         self.listeCollided = pygame.sprite.spritecollide(self,allPlateforme,False)
         for plateforme in self.listeCollided:
             if self.vector.x > 0:
-                self.rect.x = plateforme.rect.x + self.rect.width
+                self.rect.x = plateforme.rect.x - self.rect.width
             elif self.vector.x < 0:
                 self.rect.x = plateforme.rect.x + plateforme.rect.width
     
     def collisionUpBottom(self,allPlateforme):
         self.listeCollided = pygame.sprite.spritecollide(self,allPlateforme,False)
-        for plateforme in self.listeCollided:
-            if self.vector.y > 0:
-                self.rect.y = plateforme.rect.y - self.rect.height
-                self.onPlateforme = True
-            elif self.vector.y < 0:
-                self.rect.y = plateforme.rect.y + plateforme.rect.height
-
+        if self.listeCollided == []:
+            self.onPlateforme = False
+        else:
+            for plateforme in self.listeCollided:
+                if self.vector.y > 0:
+                    self.rect.y = plateforme.rect.y - self.rect.height
+                    self.onPlateforme = True
+                elif self.vector.y < 0:
+                    self.rect.y = plateforme.rect.y + plateforme.rect.height
 
 
     def update(self,allPlateforme):
 
-        #Test des collisions
-        self.collisionUpBottom(allPlateforme)
+        #Déplacement plus lourd (lent) si en l'air
+        if not(self.onPlateforme):
+            self.weightLeftRight = 1.5
 
         #Calcul du vecteur y en fonction de son état et détection d'un saut.
         if not(self.onPlateforme):
@@ -104,15 +107,12 @@ class Player(pygame.sprite.Sprite):
             if self.isJumping:
                 self.onPlateforme = False
             self.vector.y = 0
+        self.rect.y = round(self.rect.y + self.vector.y/100)
+        
+        #Test des collisions
+        self.collisionUpBottom(allPlateforme)
         
         #Ici calcul du mouvement et de la collision gauche droite
         self.mouvement()
-        self.collisionLeftRight(allPlateforme)
-        
-        #Déplacement plus lourd (lent) si en l'air
-        if not(self.onPlateforme):
-            self.weightLeftRight = 1.5
-
-        #deplacement gauche droite
         self.rect.x = round(self.rect.x + self.vector.x/100)
-        self.rect.y = round(self.rect.y + self.vector.y/100)
+        self.collisionLeftRight(allPlateforme)
