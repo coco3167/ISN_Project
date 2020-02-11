@@ -69,6 +69,10 @@ class Player(pygame.sprite.Sprite):
 
 
     def collisionLeftRight(self,allPlateforme):
+        if self.rect.x < 0:
+            self.rect.x = 0
+        elif self.rect.x > 1000-self.rect.width:
+            self.rect.x = 1000-self.rect.width
         self.listeCollided = pygame.sprite.spritecollide(self,allPlateforme,False)
         for plateforme in self.listeCollided:
             if self.vector.x > 0:
@@ -87,6 +91,9 @@ class Player(pygame.sprite.Sprite):
                     self.onPlateforme = True
                 elif self.vector.y < 0:
                     self.rect.y = plateforme.rect.y + plateforme.rect.height
+                    self.isJumping = False
+                    self.t = 0
+                    self.vector.y = 0
 
 
     def update(self,allPlateforme):
