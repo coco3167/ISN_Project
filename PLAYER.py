@@ -95,8 +95,13 @@ class Player(pygame.sprite.Sprite):
                     self.t = 0
                     self.vector.y = 0
 
+    def collisionDoors(self,allDoors):
+        collidedDoor = pygame.sprite.spritecollide(self,allDoors,False)
+        if collidedDoor != None:
+            GAME.game.changeLevel(collidedDoors.destination)
 
-    def update(self,allPlateforme):
+
+    def update(self,allPlateforme,allDoors):
 
         #Déplacement plus lourd (lent) si en l'air
         if not(self.onPlateforme):
@@ -123,3 +128,4 @@ class Player(pygame.sprite.Sprite):
         self.mouvement()
         self.rect.x = round(self.rect.x + self.vector.x/100)
         self.collisionLeftRight(allPlateforme)
+        self.collisionDoor(allDoors)
