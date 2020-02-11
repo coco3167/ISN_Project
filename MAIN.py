@@ -12,7 +12,7 @@ done = False
 
 #Création des objets du jeu
 game = GAME.Game()
-game.level1()
+game.changeLevel(0)
 
 #Boucle principale
 while not done:
