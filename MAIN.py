@@ -21,7 +21,7 @@ while not done:
             done = True
         #Test si une touche est appuyé
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_q:		# 'a' pour windows et 'q' pour linux
+            if event.key == pygame.K_a:		# 'a' pour windows et 'q' pour linux
                 game.player.eventKey("left",True)
             elif event.key == pygame.K_d:
                 game.player.eventKey("right",True)
@@ -29,7 +29,7 @@ while not done:
                 game.player.eventKey("jump",True)
         #Test si une touche est relaché
         elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_q:
+            if event.key == pygame.K_a:
                 game.player.eventKey("left",False)
             elif event.key == pygame.K_d:
                 game.player.eventKey("right",False)
