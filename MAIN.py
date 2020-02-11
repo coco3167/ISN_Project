@@ -12,6 +12,7 @@ done = False
 
 #Création des objets du jeu
 game = GAME.Game()
+game.changeLevel(0)
 
 #Boucle principale
 while not done:
@@ -37,7 +38,7 @@ while not done:
                 game.player.eventKey("jump",False)
 
     #Game Logic
-    game.player.update(game.allPlateforme)
+    game.player.update(game.level.listePlateforme)
     #Draw on screen
     screen.fill(WHITE)
     game.allSprites.draw(screen)
