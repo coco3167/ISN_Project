@@ -9,15 +9,18 @@ class Game():
         #Musique
         pygame.mixer.music.load('assets/Theme.ogg')
         pygame.mixer.music.play(loops = -1)
-        self.level = None
+        #Matrice avec toutes les plateforme selon les niveaux
+        self.matriceLevel = [
+                            (1000,800,None,0,[PLATEFORME.Plateforme(100,680)]),
+                            (1000,800,None,1,[PLATEFORME.Plateforme(0,700)])
+                            ]
 
-    def level1(self):
+    def changeLevel(self,numberLevel):
         #Retirement des sprites de l'ancien niveau
         try:
             self.allSprites.remove(self.level.listePlateforme)
         except:
             pass
-        self.level = LEVEL.Level(1000,800,None,1)
-        self.level.listePlateforme.add(PLATEFORME.Plateforme(100,680))
+        self.level = LEVEL.Level(*self.matriceLevel[numberLevel])
         #Ajout des sprites du niveau aux sprites généraux
         self.allSprites.add(self.level.listePlateforme)
