@@ -1,4 +1,4 @@
-import PLAYER,PLATEFORME,pygame
+import PLAYER,PLATEFORME,LEVEL,pygame
 class Game():
     def __init__(self):
         #Création d'une liste de tout les sprites
@@ -6,10 +6,18 @@ class Game():
         #Création du joueur
         self.player = PLAYER.Player()
         self.allSprites.add(self.player)
-        #Création d'une liste de toute les plateformes et ajout d'une plateforme
-        self.allPlateforme = pygame.sprite.Group()
-        self.allPlateforme.add(PLATEFORME.Plateforme(100,680))
-        self.allSprites.add(self.allPlateforme)
         #Musique
         pygame.mixer.music.load('assets/Theme.ogg')
         pygame.mixer.music.play(loops = -1)
+        self.level = None
+
+    def level1(self):
+        #Retirement des sprites de l'ancien niveau
+        try:
+            self.allSprites.remove(self.level.listePlateforme)
+        except:
+            pass
+        self.level = LEVEL.Level(1000,800,None,1)
+        self.level.listePlateforme.add(PLATEFORME.Plateforme(100,680))
+        #Ajout des sprites du niveau aux sprites généraux
+        self.allSprites.add(self.level.listePlateforme)
