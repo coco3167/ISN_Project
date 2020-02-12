@@ -3,8 +3,9 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         #Variables generales
-        self.image = pygame.transform.scale(pygame.image.load('assets/player.png'),(45,125))
-        self.rect = self.image.get_rect()
+        self.images = pygame.transform.scale(pygame.image.load('assets/player/player1.png'),
+                                             pygame.image.load('assets/player/player2.png'),(45,125))
+        self.rect = self.images[1].get_rect()
         self.rect.x = 500
         self.vector = pygame.math.Vector2()
         self.key = {"left":False,"right":False,"jump":False}
@@ -128,4 +129,6 @@ class Player(pygame.sprite.Sprite):
         self.mouvement()
         self.rect.x = round(self.rect.x + self.vector.x/100)
         self.collisionLeftRight(allPlateforme)
+        
+        #Collision avec les portes
         self.collisionDoor(allDoors)
