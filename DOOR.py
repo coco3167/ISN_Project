@@ -1,6 +1,6 @@
 import pygame
 class Door(pygame.sprite.Sprite):
-    def __init__(self,x,y,width,height):
+    def __init__(self,x,y,width,height,destination):
         super().__init__()
         self.image = pygame.transform.scale(pygame.image.load('assets/door.png'),(width,height))
         self.rect = self.image.get_rect()
