@@ -1,4 +1,4 @@
-import pygame,GAME,PROJECTILE
+import pygame,GAME,PROJECTILE,MAIN
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
