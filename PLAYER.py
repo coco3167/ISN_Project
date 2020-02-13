@@ -1,11 +1,14 @@
-import pygame,GAME,PROJECTILE,MAIN
+import pygame,GAME,PROJECTILE
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         #Variables generales
-        self.images = pygame.transform.scale(pygame.image.load('assets/player/player1.png'),
-                                             pygame.image.load('assets/player/player2.png'),(45,125))
-        self.rect = self.images[1].get_rect()
+        self.images = (
+                        pygame.transform.scale(pygame.image.load('assets/player/player1.png'),(51,163)),#width = 3*17
+                        pygame.transform.scale(pygame.image.load('assets/player/player2.png'),(51,163)),#height = 3*54
+                      )
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
         self.rect.x = 500
         self.vector = pygame.math.Vector2()
         self.key = {"left":False,"right":False,"jump":False}
@@ -100,13 +103,8 @@ class Player(pygame.sprite.Sprite):
                     self.t = 0
                     self.vector.y = 0
 
-    def collisionDoors(self,allDoors):
-        collidedDoor = pygame.sprite.spritecollide(self,allDoors,False)
-        if collidedDoor != None:
-            GAME.game.changeLevel(collidedDoors.destination)
 
-
-    def update(self,allPlateforme,allDoors):
+    def update(self,allPlateforme):
 
         #Déplacement plus lourd (lent) si en l'air
         if not(self.onPlateforme):
@@ -133,6 +131,3 @@ class Player(pygame.sprite.Sprite):
         self.mouvement()
         self.rect.x = round(self.rect.x + self.vector.x/100)
         self.collisionLeftRight(allPlateforme)
-
-        #Collision avec les portes
-        self.collisionDoor(allDoors)
