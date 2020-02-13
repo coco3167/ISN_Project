@@ -11,6 +11,7 @@ BLACK = (0,0,0)
 done = False
 
 #Création des objets du jeu
+dir(GAME)
 game = GAME.Game()
 game.changeLevel(0)
 
@@ -38,7 +39,7 @@ while not done:
                 game.player.eventKey("jump",False)
 
     #Game Logic
-    game.player.update(game.level.listePlateforme,game.level.listeDoor)
+    game.update()
     #Draw on screen
     screen.fill(WHITE)
     game.allSprites.draw(screen)
