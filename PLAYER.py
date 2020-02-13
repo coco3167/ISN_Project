@@ -2,12 +2,17 @@ import pygame,GAME,PROJECTILE
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        #Variables generales
+
+        #Variable pour l'animation
+        self.time = pygame.time.get_ticks()
         self.images = (
                         pygame.transform.scale(pygame.image.load('assets/player/player1.png'),(51,163)),#width = 3*17
                         pygame.transform.scale(pygame.image.load('assets/player/player2.png'),(51,163)),#height = 3*54
                       )
-        self.image = self.images[0]
+        self.imageIndex = 0
+        self.image = self.images[self.imageIndex]
+
+        #Variable pour la position et le mouvement
         self.rect = self.image.get_rect()
         self.rect.x = 500
         self.vector = pygame.math.Vector2()
@@ -131,3 +136,12 @@ class Player(pygame.sprite.Sprite):
         self.mouvement()
         self.rect.x = round(self.rect.x + self.vector.x/100)
         self.collisionLeftRight(allPlateforme)
+
+        #Idle animation
+        if self.vector.x != 0:
+            self.time = pygame.time.get_ticks()
+            self.imageIndex = 0
+        elif pygame.time.get_ticks()-self.time>=1000: #Temps avant un changement de frame
+            self.imageIndex = (self.imageIndex+1)%2 #pour pas dépasser l'index
+            self.time = pygame.time.get_ticks()
+        self.image = self.images[self.imageIndex]
