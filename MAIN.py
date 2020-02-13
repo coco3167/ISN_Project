@@ -38,7 +38,7 @@ while not done:
                 game.player.eventKey("jump",False)
 
     #Game Logic
-    game.player.update(game.level.listePlateforme,game.level.allDoors)
+    game.player.update(game.level.listePlateforme,game.level.listeDoor)
     #Draw on screen
     screen.fill(WHITE)
     game.allSprites.draw(screen)
