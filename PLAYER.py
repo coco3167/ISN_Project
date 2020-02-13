@@ -1,4 +1,4 @@
-import pygame,GAME
+import pygame,GAME,PROJECTILE
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -26,6 +26,7 @@ class Player(pygame.sprite.Sprite):
         self.hauteurMaxSaut = -self.vitesseAccelerationSaut/(2*-self.vitesseDescelerationSaut) #-b/2a
         self.gravite = 150
         self.accelerationGravite = 5
+        self.allProjectile = pygame.sprite.Group()
 
 
     def eventKey(self,keyWord,action):
@@ -61,6 +62,9 @@ class Player(pygame.sprite.Sprite):
             self.isJumping = False
             self.t = 0
 
+    def launchProjectile(self):
+        self.allProjectile.add(Projectile())
+
     def inertie(self):
         #Quand il tombe
         if self.vector.y > self.gravite-self.accelerationGravite:
@@ -80,7 +84,7 @@ class Player(pygame.sprite.Sprite):
                 self.rect.x = plateforme.rect.x - self.rect.width
             elif self.vector.x < 0:
                 self.rect.x = plateforme.rect.x + plateforme.rect.width
-    
+
     def collisionUpBottom(self,allPlateforme):
         self.listeCollided = pygame.sprite.spritecollide(self,allPlateforme,False)
         if self.listeCollided == []:
@@ -121,14 +125,14 @@ class Player(pygame.sprite.Sprite):
                 self.onPlateforme = False
             self.vector.y = 0
         self.rect.y = round(self.rect.y + self.vector.y/100)
-        
+
         #Test des collisions
         self.collisionUpBottom(allPlateforme)
-        
+
         #Ici calcul du mouvement et de la collision gauche droite
         self.mouvement()
         self.rect.x = round(self.rect.x + self.vector.x/100)
         self.collisionLeftRight(allPlateforme)
-        
+
         #Collision avec les portes
         self.collisionDoor(allDoors)
