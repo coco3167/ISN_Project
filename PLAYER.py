@@ -12,9 +12,12 @@ class Player(pygame.sprite.Sprite):
         self.imageIndex = 0
         self.image = self.images[self.imageIndex]
 
-        #Variable pour la position et le mouvement
+        #Variable pour la position
         self.rect = self.image.get_rect()
-        self.rect.x = 500
+        self.rect.x,self.rect.y = 500,500
+        #Rectangle pour le rendu
+        self.renderRect = pygame.Rect(self.rect.x-4,self.rect.y-4,self.rect.width+8,self.rect.height+8)
+        #Variables pour le mouvement
         self.vector = pygame.math.Vector2()
         self.key = {"left":False,"right":False,"jump":False}
         self.listeCollided = []
@@ -84,8 +87,8 @@ class Player(pygame.sprite.Sprite):
     def collisionLeftRight(self,allPlateforme):
         if self.rect.x < 0:
             self.rect.x = 0
-        elif self.rect.x > 1000-self.rect.width:
-            self.rect.x = 1000-self.rect.width
+        elif self.rect.x > 1400-self.rect.width:
+            self.rect.x = 1400-self.rect.width
         self.listeCollided = pygame.sprite.spritecollide(self,allPlateforme,False)
         for plateforme in self.listeCollided:
             if self.vector.x > 0:
@@ -136,6 +139,9 @@ class Player(pygame.sprite.Sprite):
         self.mouvement()
         self.rect.x = round(self.rect.x + self.vector.x/100)
         self.collisionLeftRight(allPlateforme)
+
+        #Actualisation du rectangle de rendu
+        self.renderRect.x,self.renderRect.y = self.rect.x-2,self.rect.y-2
 
         #Idle animation
         if self.vector.x != 0:
