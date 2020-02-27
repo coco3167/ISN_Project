@@ -16,6 +16,28 @@ class Game():
                           ]
         
 
+    def startMenu(self,screen):
+        done = False
+        index = 0
+        time = pygame.time.get_ticks()
+        images = [pygame.image.load('assets/StartMenu/startMenu1.png'),pygame.image.load('assets/StartMenu/startMenu2.png')]
+        image = images[index]
+        while not done:
+            #Test appui espace pour sortir de la boucle
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        done = True
+
+            #Animation
+            if pygame.time.get_ticks()-time>=2000:
+                time = pygame.time.get_ticks()
+                index = (1+index)%2
+                image = images[index]
+            screen.blit(image,(0,0))
+            pygame.display.flip()
+
+        
     def update(self,screen):
         #Update du player
         self.player.update(self.level.listePlateforme)

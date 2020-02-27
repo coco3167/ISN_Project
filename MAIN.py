@@ -12,6 +12,7 @@ done = False
 
 #Création des objets du jeu
 game = GAME.Game()
+game.startMenu(screen)
 game.changeLevel(0,screen)
 
 #Boucle principale
