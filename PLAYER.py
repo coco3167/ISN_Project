@@ -12,11 +12,14 @@ class Player(pygame.sprite.Sprite):
         self.imageIndex = 0
         self.image = self.images[self.imageIndex]
 
+        #Le sens correspond à si le player regarde à droite ou à gauche
+        self.sens = 1
+
         #Variable pour la position
         self.rect = self.image.get_rect()
         self.rect.x,self.rect.y = 415,200
         #Rectangle pour le rendu
-        self.renderRect = pygame.Rect(self.rect.x-5,self.rect.y-5,self.rect.width+10,self.rect.height+10)
+        #self.renderRect = pygame.Rect(self.rect.x-5,self.rect.y-5,self.rect.width+10,self.rect.height+10)
         #Variables pour le mouvement
         self.vector = pygame.math.Vector2()
         self.key = {"left":False,"right":False,"jump":False}
@@ -74,7 +77,7 @@ class Player(pygame.sprite.Sprite):
             self.t = 0
 
     def launchProjectile(self):
-        self.allProjectile.add(Projectile())
+        self.allProjectile.add(PROJECTILE.Projectile(self.rect.x,self.rect.y,self.sens))
 
     def inertie(self):
         #Quand il tombe
@@ -140,8 +143,14 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = round(self.rect.x + self.vector.x/100)
         self.collisionLeftRight(allPlateforme)
 
+        #Actualisation du sens du player
+        if self.key["right"]:
+            self.sens = 1
+        elif self.key["left"]:
+            self.sens = -1
+
         #Actualisation du rectangle de rendu
-        self.renderRect.x,self.renderRect.y = self.rect.x-5,self.rect.y-5
+        #self.renderRect.x,self.renderRect.y = self.rect.x-5,self.rect.y-5
 
         #Idle animation
         if self.vector.x != 0:
@@ -151,3 +160,6 @@ class Player(pygame.sprite.Sprite):
             self.imageIndex = (self.imageIndex+1)%2 #pour pas dépasser l'index
             self.time = pygame.time.get_ticks()
         self.image = self.images[self.imageIndex]
+
+        #Déplacement des projectiles
+        self.allProjectile.update()

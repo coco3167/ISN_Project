@@ -4,7 +4,7 @@ pygame.init()
 
 #Initialisation de la fenêtre
 pygame.display.set_caption("Alpha")
-screen = pygame.display.set_mode((1000,500),pygame.FULLSCREEN)
+screen = pygame.display.set_mode((1000,500))#,pygame.FULLSCREEN)
 #Initialisation des constantes et variables globales
 WHITE = (255,255,255)
 BLACK = (0,0,0)
@@ -28,6 +28,8 @@ while not done:
                 game.player.eventKey("right",True)
             elif event.key == pygame.K_SPACE:
                 game.player.eventKey("jump",True)
+            elif event.key == pygame.K_BACKSPACE:
+                game.player.launchProjectile()
         #Test si une touche est relaché
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
@@ -43,7 +45,8 @@ while not done:
     screen.fill(WHITE)
     screen.blit(game.level.background,(0,0))
     game.allSprites.draw(screen)
-    pygame.display.update(game.player.renderRect)
+    pygame.display.flip()
+    #pygame.display.update(game.player.renderRect) Plus efficace mais compliqué à mettre en place
 
 #Fermeture du programme
 pygame.quit()

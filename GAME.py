@@ -17,7 +17,11 @@ class Game():
         
 
     def update(self,screen):
+        #Update du player
         self.player.update(self.level.listePlateforme)
+        #Rajout des projectiles dans les éléments à dessiner
+        self.allSprites.add(self.player.allProjectile)
+        #Test collision pour le changement de niveau
         numDoorCollided = self.player.rect.collidelist(self.level.listeDoor)
         if numDoorCollided != -1:
             doorCollided = self.level.listeDoor[numDoorCollided]
