@@ -11,8 +11,8 @@ class Game():
         pygame.mixer.music.play(loops = -1)
         #Matrice avec toutes les plateforme selon les niveaux
         self.listeLevel = [
-                            (1400,700,'assets/backgroundLevel0.png',0,[PLATEFORME.Plateforme(0,650,1400,50),PLATEFORME.Plateforme(0,343,91,323)],[DOOR.Door('Left',0,45,120,1)]),#Level 0
-                            (1400,700,None,1,[PLATEFORME.Plateforme(0,780,1000,20),PLATEFORME.Plateforme(100,550,800,20)],[DOOR.Door('Right',100,45,120,0)]),#Level 1
+                            ('assets/backgroundLevel0.png',0,[PLATEFORME.Plateforme(0,245,65,230),PLATEFORME.Plateforme(0,480,1000,1)],[DOOR.Door('Left',0,30,85,1)]),#Level 0
+                            ('assets/backgroundLevel1.png',1,[PLATEFORME.Plateforme(0,425,1000,1),PLATEFORME.Plateforme(0,185,1000,1)],[DOOR.Door('Right',100,10,85,0)]),#Level 1
                           ]
         
 
