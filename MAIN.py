@@ -4,7 +4,7 @@ pygame.init()
 
 #Initialisation de la fenêtre
 pygame.display.set_caption("Alpha")
-screen = pygame.display.set_mode((1400,700))
+screen = pygame.display.set_mode((1000,500))
 #Initialisation des constantes et variables globales
 WHITE = (255,255,255)
 BLACK = (0,0,0)
@@ -43,7 +43,7 @@ while not done:
     screen.fill(WHITE)
     screen.blit(game.level.background,(0,0))
     game.allSprites.draw(screen)
-    pygame.display.update(game.player.renderRect) #Il y a moyen d'optimiser avec pygame.display.update si on fait une liste de rectangle ou il faut render uniquement ce dont on a besoin
+    pygame.display.update(game.player.renderRect)
 
 #Fermeture du programme
 pygame.quit()
