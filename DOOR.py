@@ -4,6 +4,6 @@ class Door():
         if LeftOrRight == 'Left':
             x = 0
         elif LeftOrRight == 'Right':
-            x = 940
+            x = 1000-width
         self.rect = pygame.Rect(x,y,width,height)
         self.destination = destination
