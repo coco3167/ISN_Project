@@ -6,15 +6,15 @@ class Player(pygame.sprite.Sprite):
         #Variable pour l'animation
         self.time = pygame.time.get_ticks()
         self.images = (
-                        pygame.transform.scale(pygame.image.load('assets/player/player1.png'),(51,163)),#width = 3*17
-                        pygame.transform.scale(pygame.image.load('assets/player/player2.png'),(51,163)),#height = 3*54
+                        (pygame.image.load('assets/player/player1.png')),
+                        (pygame.image.load('assets/player/player2.png')),
                       )
         self.imageIndex = 0
         self.image = self.images[self.imageIndex]
 
         #Variable pour la position
         self.rect = self.image.get_rect()
-        self.rect.x,self.rect.y = 500,500
+        self.rect.x,self.rect.y = 50,50
         #Rectangle pour le rendu
         self.renderRect = pygame.Rect(self.rect.x-4,self.rect.y-4,self.rect.width+8,self.rect.height+8)
         #Variables pour le mouvement
@@ -87,8 +87,8 @@ class Player(pygame.sprite.Sprite):
     def collisionLeftRight(self,allPlateforme):
         if self.rect.x < 0:
             self.rect.x = 0
-        elif self.rect.x > 1400-self.rect.width:
-            self.rect.x = 1400-self.rect.width
+        elif self.rect.x > 1000-self.rect.width:
+            self.rect.x = 1000-self.rect.width
         self.listeCollided = pygame.sprite.spritecollide(self,allPlateforme,False)
         for plateforme in self.listeCollided:
             if self.vector.x > 0:
