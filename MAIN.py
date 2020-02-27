@@ -4,7 +4,7 @@ pygame.init()
 
 #Initialisation de la fenêtre
 pygame.display.set_caption("Alpha")
-screen = pygame.display.set_mode((1000,500))
+screen = pygame.display.set_mode((1000,500),pygame.FULLSCREEN)
 #Initialisation des constantes et variables globales
 WHITE = (255,255,255)
 BLACK = (0,0,0)
