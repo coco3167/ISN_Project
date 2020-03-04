@@ -12,8 +12,8 @@ done = False
 
 #Création des objets du jeu
 game = GAME.Game()
-game.startMenu(screen)
-game.changeLevel(0,screen)
+game.titleScreen(screen)
+game.changeLevel(0,-1,screen)
 
 #Boucle principale
 while not done:
