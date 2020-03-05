@@ -12,6 +12,9 @@ class Player(pygame.sprite.Sprite):
         self.imageIndex = 0
         self.image = self.images[self.imageIndex]
 
+		#Variable pour la vie
+		self.life = 99
+
         #Le sens correspond à si le player regarde à droite ou à gauche
         self.sens = 1
 
@@ -114,6 +117,10 @@ class Player(pygame.sprite.Sprite):
                     self.t = 0
                     self.vector.y = 0
 
+	def collisionHurt(self):
+		#Fonction pour tester la collision avec ce qui fait des dégats et les appliquer s'il y en a.
+		pass
+
 
     def update(self,allPlateforme):
 
@@ -149,8 +156,8 @@ class Player(pygame.sprite.Sprite):
         elif self.key["left"]:
             self.sens = -1
 
-        #Actualisation du rectangle de rendu
-        #self.renderRect.x,self.renderRect.y = self.rect.x-5,self.rect.y-5
+        #Test de la collision avec des dégats
+		self.collisionHurt()
 
         #Idle animation
         if self.vector.x != 0:
