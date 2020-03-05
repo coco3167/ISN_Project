@@ -1,6 +1,7 @@
 import pygame
 
 class Projectile(pygame.sprite.Sprite):
+    """Classe permettant la création de projectiles pour le joueur"""
     def __init__(self,x,y,sens):
         super().__init__()
         #Vitesse pour son déplacement dans l'espace

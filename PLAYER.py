@@ -1,5 +1,6 @@
 import pygame,GAME,PROJECTILE
 class Player(pygame.sprite.Sprite):
+    """Classe permettant de créer et gêrer les comportements du joueur"""
     def __init__(self):
         super().__init__()
 

@@ -1,5 +1,6 @@
 import pygame
 class Door():
+"""Classe permettant la création de portes"""
     def __init__(self,LeftOrRight,y,width,height,destination,coordPlayer):
         #Mur sur lequelle la porte se trouve
         if LeftOrRight == 'Left':

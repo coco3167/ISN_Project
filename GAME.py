@@ -1,5 +1,6 @@
 import PLAYER,PLATEFORME,LEVEL,DOOR,pygame
 class Game():
+    """Classe permettant de gêrer les différents élements du jeu"""
     def __init__(self):
         #Création d'une liste de tout les sprites
         self.allSprites = pygame.sprite.Group()
