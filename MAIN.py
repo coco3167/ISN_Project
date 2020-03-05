@@ -42,12 +42,16 @@ while not done:
 
     #Game Logic
     game.update(screen)
-    #Draw on screen
+    #Drawing
     screen.fill(WHITE)
-    screen.blit(game.level.background,(0,0))
+	    #Background    
+	screen.blit(game.level.background,(0,0))
+        #Foreground
     game.allSprites.draw(screen)
+        #HUD
+
+        #Actualisation de l'écran
     pygame.display.flip()
-    #pygame.display.update(game.player.renderRect) Plus efficace mais compliqué à mettre en place
 
 #Fermeture du programme
 pygame.quit()

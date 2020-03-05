@@ -12,17 +12,15 @@ class Player(pygame.sprite.Sprite):
         self.imageIndex = 0
         self.image = self.images[self.imageIndex]
 
-		#Variable pour la vie
-		self.life = 99
+        #Variable pour la vie
+        self.life = 99
 
         #Le sens correspond à si le player regarde à droite ou à gauche
         self.sens = 1
 
-        #Variable pour la position
+        #Variable pour la position et le rectangle de collision
         self.rect = self.image.get_rect()
         self.rect.x,self.rect.y = 415,200
-        #Rectangle pour le rendu
-        #self.renderRect = pygame.Rect(self.rect.x-5,self.rect.y-5,self.rect.width+10,self.rect.height+10)
         #Variables pour le mouvement
         self.vector = pygame.math.Vector2()
         self.key = {"left":False,"right":False,"jump":False}
@@ -43,10 +41,13 @@ class Player(pygame.sprite.Sprite):
         self.hauteurMaxSaut = -self.vitesseAccelerationSaut/(2*-self.vitesseDescelerationSaut) #-b/2a
         self.gravite = 150
         self.accelerationGravite = 5
+
+        #Groupe pour stocker les projectiles
         self.allProjectile = pygame.sprite.Group()
 
 
     def eventKey(self,keyWord,action):
+        #Permet de détecter comment sont les différentes touches
         self.key[keyWord] = action
 
 
@@ -91,6 +92,7 @@ class Player(pygame.sprite.Sprite):
 
 
     def collisionLeftRight(self,allPlateforme):
+        #On teste les collisions à gauche et à droite puis on déplace le joueur à l'endroit requis si il est en collision avec une plateforme
         if self.rect.x < 0:
             self.rect.x = 0
         elif self.rect.x > 1000-self.rect.width:
@@ -103,6 +105,7 @@ class Player(pygame.sprite.Sprite):
                 self.rect.x = plateforme.rect.x + plateforme.rect.width
 
     def collisionUpBottom(self,allPlateforme):
+        #On teste les collisions en haut et en bas puis on déplace le joueur à l'endroit requis si il est en collision avec une plateforme (+ on test s'il est sur une plateforme pour pouvoir dire s'il peut sauter
         self.listeCollided = pygame.sprite.spritecollide(self,allPlateforme,False)
         if self.listeCollided == []:
             self.onPlateforme = False
@@ -117,9 +120,9 @@ class Player(pygame.sprite.Sprite):
                     self.t = 0
                     self.vector.y = 0
 
-	def collisionHurt(self):
-		#Fonction pour tester la collision avec ce qui fait des dégats et les appliquer s'il y en a.
-		pass
+    def collisionHurt(self):
+        #Fonction pour tester la collision avec ce qui fait des dégats et les appliquer s'il y en a.
+        pass
 
 
     def update(self,allPlateforme):
@@ -157,14 +160,14 @@ class Player(pygame.sprite.Sprite):
             self.sens = -1
 
         #Test de la collision avec des dégats
-		self.collisionHurt()
+        self.collisionHurt()
 
         #Idle animation
         if self.vector.x != 0:
             self.time = pygame.time.get_ticks()
             self.imageIndex = 0
-        elif pygame.time.get_ticks()-self.time>=1000: #Temps avant un changement de frame
-            self.imageIndex = (self.imageIndex+1)%2 #pour pas dépasser l'index
+        elif pygame.time.get_ticks()-self.time>=1000: #Temps avant un changement de frame de 1 seconde
+            self.imageIndex = (self.imageIndex+1)%2 #Pour pas dépasser l'index
             self.time = pygame.time.get_ticks()
         self.image = self.images[self.imageIndex]
 

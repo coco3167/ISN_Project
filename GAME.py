@@ -30,11 +30,12 @@ class Game():
                     if event.key == pygame.K_SPACE:
                         done = True
 
-            #Animation
+            #Animation (1 Frame tous les 2 secondes)
             if pygame.time.get_ticks()-time>=2000:
                 time = pygame.time.get_ticks()
                 index = (1+index)%2
                 image = images[index]
+            #Drawing
             screen.blit(image,(0,0))
             pygame.display.flip()
 
@@ -53,6 +54,7 @@ class Game():
             self.changeLevel(doorCollided.destination,numDoorCollided,screen)
 
     def changeLevel(self,numberLevel,numDoorCollided,screen):
+        #Changement du niveau
         self.level = LEVEL.Level(*self.listeLevel[numberLevel])
         
         #Actualisation de la position du joueur quand il prend une porte
@@ -60,5 +62,6 @@ class Game():
         if numDoorCollided != -1:
             (self.player.rect.x,self.player.rect.y) = doorDestination.coordPlayer
 
+        #Drawing
         screen.blit(self.level.background,(0,0))
         pygame.display.flip()
