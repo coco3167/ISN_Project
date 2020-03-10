@@ -22,6 +22,7 @@ class Player(pygame.sprite.Sprite):
         #Variable pour la position et le rectangle de collision
         self.rect = self.image.get_rect()
         self.rect.x,self.rect.y = 415,200
+
         #Variables pour le mouvement
         self.vector = pygame.math.Vector2()
         self.key = {"left":False,"right":False,"jump":False}
@@ -37,11 +38,11 @@ class Player(pygame.sprite.Sprite):
         self.isJumping = False
         self.onPlateforme = False
         self.t = 0
-        self.vitesseAccelerationSaut = 85 #b
-        self.vitesseDescelerationSaut = 12 #a
+        self.vitesseAccelerationSaut = 111 #b
+        self.vitesseDescelerationSaut = 15 #a
         self.hauteurMaxSaut = -self.vitesseAccelerationSaut/(2*-self.vitesseDescelerationSaut) #-b/2a
-        self.gravite = 150
-        self.accelerationGravite = 5
+        self.gravite = 300
+        self.accelerationGravite = 10
 
         #Groupe pour stocker les projectiles
         self.allProjectile = pygame.sprite.Group()
