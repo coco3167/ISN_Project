@@ -1,12 +1,12 @@
 import pygame
 class Door():
     """Classe permettant la création de portes"""
-    def __init__(self,LeftOrRight,y,width,height,destination,coordPlayer):
+    def __init__(self,LeftOrRight,y,width,height,destination,coordPlayer,screenWidth):
         #Mur sur lequelle la porte se trouve
         if LeftOrRight == 'Left':
             x = 0
         elif LeftOrRight == 'Right':
-            x = 1000-width
+            x = screenWidth - width
         #Son rectangle de collision
         self.rect = pygame.Rect(x,y,width,height)
         #Son niveau de destination
