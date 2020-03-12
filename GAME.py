@@ -1,4 +1,4 @@
-import PLAYER,PLATEFORME,LEVEL,DOOR,pygame
+import ENNEMI,PLAYER,PLATEFORME,LEVEL,DOOR,pygame
 class Game():
     """Classe permettant de gêrer les différents élements du jeu"""
     def __init__(self):
@@ -15,7 +15,7 @@ class Game():
                             ('assets/backgroundLevel0.png',0,[PLATEFORME.Plateforme(0,245,65,230),PLATEFORME.Plateforme(0,480,1000,1)],[DOOR.Door('Left',0,30,85,1,(31,0))]),#Level 0
                             ('assets/backgroundLevel1.png',1,[PLATEFORME.Plateforme(0,425,1000,1),PLATEFORME.Plateforme(0,185,1000,1)],[DOOR.Door('Right',100,10,85,0,(939,20))]),#Level 1
                           ]
-        
+
 
     def titleScreen(self,screen):
         #Variables pour la mise en place du menu de l'écran titre
@@ -40,14 +40,14 @@ class Game():
             screen.blit(image,(0,0))
             pygame.display.flip()
 
-        
+
     def update(self,screen):
         #Update du player
         self.player.update(self.level.listePlateforme)
-        
+
         #Rajout des projectiles dans les éléments à dessiner
         self.allSprites.add(self.player.allProjectile)
-        
+
         #Test collision pour le changement de niveau
         numDoorCollided = self.player.rect.collidelist(self.level.listeDoor)
         if numDoorCollided != -1:
@@ -57,7 +57,7 @@ class Game():
     def changeLevel(self,numberLevel,numDoorCollided,screen):
         #Changement du niveau
         self.level = LEVEL.Level(*self.listeLevel[numberLevel])
-        
+
         #Actualisation de la position du joueur quand il prend une porte
         doorDestination = self.level.listeDoor[numDoorCollided]
         if numDoorCollided != -1:
