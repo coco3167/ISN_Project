@@ -1,7 +1,7 @@
 import pygame,GAME,PROJECTILE
 class Player(pygame.sprite.Sprite):
     """Classe permettant de créer et gêrer les comportements du joueur"""
-    def __init__(self):
+    def __init__(self,screenWidth):
         super().__init__()
 
         #Variable pour l'animation
@@ -15,6 +15,9 @@ class Player(pygame.sprite.Sprite):
 
         #Variable pour la vie
         self.life = 99
+
+        #Largeur de l'écran
+        self.screenWidth = screenWidth
 
         #Le sens correspond à si le player regarde à droite ou à gauche
         self.sens = 1
@@ -97,8 +100,8 @@ class Player(pygame.sprite.Sprite):
         #On teste les collisions à gauche et à droite puis on déplace le joueur à l'endroit requis si il est en collision avec une plateforme
         if self.rect.x < 0:
             self.rect.x = 0
-        elif self.rect.x > 1000-self.rect.width:
-            self.rect.x = 1000-self.rect.width
+        elif self.rect.x > self.screenWidth-self.rect.width:
+            self.rect.x = self.screenWidth-self.rect.width
         self.listeCollided = pygame.sprite.spritecollide(self,allPlateforme,False)
         for plateforme in self.listeCollided:
             if self.vector.x > 0:

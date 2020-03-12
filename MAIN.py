@@ -4,14 +4,15 @@ pygame.init()
 
 #Initialisation de la fenêtre
 pygame.display.set_caption("Alpha")
-screen = pygame.display.set_mode((1000,500))#,pygame.FULLSCREEN)
+screenWidth = 1000
+screen = pygame.display.set_mode((screenWidth,500))#,pygame.FULLSCREEN)
 #Initialisation des constantes et variables globales
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 done = False
 
 #Création des objets du jeu
-game = GAME.Game()
+game = GAME.Game(screenWidth)
 game.titleScreen(screen)
 game.changeLevel(0,-1,screen)
 
