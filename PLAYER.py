@@ -172,7 +172,7 @@ class Player(pygame.sprite.Sprite):
             self.time = pygame.time.get_ticks()
             self.imageIndex = 0
         elif pygame.time.get_ticks()-self.time>=1000: #Temps avant un changement de frame de 1 seconde
-            self.imageIndex = (self.imageIndex+1)%2 #Pour pas dépasser l'index
+            self.imageIndex = (self.imageIndex + 1)%2 #Pour pas dépasser l'index
             self.time = pygame.time.get_ticks()
         self.image = self.images[self.imageIndex]
 

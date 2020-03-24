@@ -1,4 +1,4 @@
-import ENNEMI,PLAYER,PLATEFORME,LEVEL,DOOR,pygame
+import PLAYER,PLATEFORME,LEVEL,DOOR,pygame
 class Game():
     """Classe permettant de gêrer les différents élements du jeu"""
     def __init__(self,screenWidth):
@@ -12,8 +12,8 @@ class Game():
         pygame.mixer.music.play(loops = -1)
         #Matrice avec toutes les plateforme selon les niveaux
         self.listeLevel = [
-                            ('assets/backgroundLevel0.png',0,[PLATEFORME.Plateforme(0,245,65,230),PLATEFORME.Plateforme(0,480,1000,1)],[DOOR.Door('Left',0,30,85,1,(31,0),screenWidth)]),#Level 0
-                            ('assets/backgroundLevel1.png',1,[PLATEFORME.Plateforme(0,425,1000,1),PLATEFORME.Plateforme(0,185,1000,1)],[DOOR.Door('Right',100,10,85,0,(939,20),screenWidth)]),#Level 1
+                            ('assets/backgrounds/backgroundLevel0.png',0,[PLATEFORME.Plateforme(0,245,65,230),PLATEFORME.Plateforme(0,480,1000,1)],[DOOR.Door('Left',0,30,85,1,(31,0),screenWidth)],[]),#Level 0
+                            ('assets/backgrounds/backgroundLevel1.png',1,[PLATEFORME.Plateforme(0,425,1000,1),PLATEFORME.Plateforme(0,185,1000,1)],[DOOR.Door('Right',100,10,85,0,(939,20),screenWidth)],[(50,60),]),#Level 1
                           ]
 
 
@@ -44,6 +44,7 @@ class Game():
     def update(self,screen):
         #Update du player
         self.player.update(self.level.listePlateforme)
+        self.level.listeMonster.update()
 
         #Rajout des projectiles dans les éléments à dessiner
         self.allSprites.add(self.player.allProjectile)
@@ -57,6 +58,8 @@ class Game():
     def changeLevel(self,numberLevel,numDoorCollided,screen):
         #Changement du niveau
         self.level = LEVEL.Level(*self.listeLevel[numberLevel])
+
+        self.allSprites.add(self.level.listeMonster)
 
         #Actualisation de la position du joueur quand il prend une porte
         doorDestination = self.level.listeDoor[numDoorCollided]
