@@ -86,7 +86,7 @@ class Player(pygame.sprite.Sprite):
             self.t = 0
 
     def launchProjectile(self):
-        self.allProjectile.add(PROJECTILE.Projectile(self.rect.x,self.rect.y,self.sens))
+        self.allProjectile.add(PROJECTILE.Projectile(self.rect.x + (self.rect.width/2),self.rect.y,self.sens))
 
     def inertie(self):
         #Quand il tombe
@@ -175,6 +175,9 @@ class Player(pygame.sprite.Sprite):
             self.imageIndex = (self.imageIndex + 1)%2 #Pour pas dépasser l'index
             self.time = pygame.time.get_ticks()
         self.image = self.images[self.imageIndex]
+
+        if self.sens != 1:
+            self.image = pygame.transform.flip(self.image,True,False)
 
         #Déplacement des projectiles
         self.allProjectile.update()
