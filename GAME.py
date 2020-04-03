@@ -47,9 +47,9 @@ class Game():
 
 
     def update(self,screen):
-        #Update du player
+        #Update du player et des monster
         self.player.update(self.level.listePlateforme)
-        self.level.listeMonster.update()
+        self.level.listeMonster.update(self.player.allProjectile)
 
         #Rajout des projectiles dans les éléments à dessiner
         self.allSprites.add(self.player.allProjectile)
