@@ -47,8 +47,11 @@ class Game():
 
 
     def update(self,screen):
+        if self.player.life <= 0:
+            self.gameOver()
+        
         #Update du player et des monster
-        self.player.update(self.level.listePlateforme)
+        self.player.update(self.level.listePlateforme,self.level.listeMonster)
         self.level.listeMonster.update(self.player.allProjectile)
 
         #Rajout des projectiles dans les éléments à dessiner
@@ -78,3 +81,7 @@ class Game():
         #Drawing
         screen.blit(self.level.background,(0,0))
         pygame.display.flip()
+
+    def gameOver(self):
+        #Fonction permettant de gêrer un Game Over et de redémarrer le jeu si le joueur n'a plus de vie.
+        print(self.player.life)

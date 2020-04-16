@@ -125,13 +125,19 @@ class Player(pygame.sprite.Sprite):
                     self.t = 0
                     self.vector.y = 0
 
-    def collisionHurt(self):
+    def collisionHurt(self,allMonster):
         #Fonction pour tester la collision avec ce qui fait des dégats et les appliquer s'il y en a.
-        pass
+        listeMonsterCollided = pygame.sprite.spritecollide(self,allMonster,False)
+        if listeMonsterCollided != []:
+            monsterCollided = listeMonsterCollided[0]
+            self.life -= 10
+            if monsterCollided.rect.x < self.rect.x:  #On décale le joueur pour qu'il ne se soit pas tapé en boucle.
+                self.rect.x += 50
+            else:
+                self.rect.x -= 50
 
 
-    def update(self,allPlateforme):
-
+    def update(self,allPlateforme,allMonster):
         #Déplacement plus lourd (lent) si en l'air
         if not(self.onPlateforme):
             self.weightLeftRight = 1.5
@@ -165,7 +171,7 @@ class Player(pygame.sprite.Sprite):
             self.sens = -1
 
         #Test de la collision avec des dégats
-        self.collisionHurt()
+        self.collisionHurt(allMonster)
 
         #Idle animation
         if self.vector.x != 0:
