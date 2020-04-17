@@ -54,5 +54,10 @@ while not done:
     #Actualisation de l'écran
     pygame.display.flip()
 
+    if game.gameIsOver:
+        game = GAME.Game(screenWidth)
+        game.titleScreen(screen)
+        game.changeLevel(0,-1,screen)
+
 #Fermeture du programme
 pygame.quit()

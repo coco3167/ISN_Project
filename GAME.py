@@ -2,6 +2,9 @@ import PLAYER,PLATEFORME,LEVEL,DOOR,pygame
 class Game():
     """Classe permettant de gêrer les différents élements du jeu"""
     def __init__(self,screenWidth):
+        #Création de la variable pour le Game Over
+        self.gameIsOver = False
+
         #Création d'une liste de tout les sprites
         self.allSprites = pygame.sprite.Group()
 
@@ -84,4 +87,4 @@ class Game():
 
     def gameOver(self):
         #Fonction permettant de gêrer un Game Over et de redémarrer le jeu si le joueur n'a plus de vie.
-        print(self.player.life)
+        self.gameIsOver = True  #Peut être changer le nom de la variable (pas de meilleur idée pour le moment)
