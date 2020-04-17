@@ -132,9 +132,9 @@ class Player(pygame.sprite.Sprite):
             monsterCollided = listeMonsterCollided[0]
             self.life -= 10
             if monsterCollided.rect.x < self.rect.x:  #On décale le joueur pour qu'il ne se soit pas tapé en boucle.
-                self.rect.x += 50
+                self.rect.x += 100
             else:
-                self.rect.x -= 50
+                self.rect.x -= 100
 
 
     def update(self,allPlateforme,allMonster):

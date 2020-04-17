@@ -6,9 +6,14 @@ pygame.init()
 pygame.display.set_caption("Alpha")
 screenWidth = 1000
 screen = pygame.display.set_mode((screenWidth,500))#,pygame.FULLSCREEN)
-#Initialisation des constantes et variables globales
-WHITE = (255,255,255)#utile ?
-BLACK = (0,0,0)#utile ?
+
+#Ajout d'une police pour écricre du texte
+font = pygame.font.SysFont("arial",12)
+
+#Constantes
+WHITE = (255,255,255)
+
+#Variable pour sortir de la boucle quand la fenêtre est fermée
 done = False
 
 #Création des objets du jeu
@@ -50,10 +55,13 @@ while not done:
         #Foreground
     game.allSprites.draw(screen)
         #HUD
+    if game.player.life>0:  #Affichage de la vie en temps réel (peut-être remplacer le texte par une barre
+        screen.blit(font.render(str(game.player.life),False,WHITE),(0,0))
 
     #Actualisation de l'écran
     pygame.display.flip()
 
+    #Réinitialisation du jeu quand le joueur meurt
     if game.gameIsOver:
         game = GAME.Game(screenWidth)
         game.titleScreen(screen)
