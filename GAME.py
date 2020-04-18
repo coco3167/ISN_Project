@@ -60,7 +60,7 @@ class Game():
         
         #Update du player et des monster
         self.player.update(self.level.listePlateforme,self.level.listeMonster)
-        self.level.listeMonster.update(self.player.allProjectile)
+        self.level.listeMonster.update(self.player.allProjectile,self.player.rect)
 
         #Rajout des projectiles dans les éléments à dessiner
         self.allSprites.add(self.player.allProjectile)

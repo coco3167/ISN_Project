@@ -12,6 +12,7 @@ class Monster(pygame.sprite.Sprite):
                       )
         self.imageIndex = 0
         self.image = self.images[self.imageIndex]
+        self.isFlipp = False
 
         #Variable pour la position et le rectangle de collision
         self.rect = self.image.get_rect()
@@ -30,7 +31,7 @@ class Monster(pygame.sprite.Sprite):
             self.time = pygame.time.get_ticks()
             self.image = self.images[self.imageIndex]
 
-    def update(self,allProjectile):
+    def update(self,allProjectile,playerRect):
         #Test collision monster/projectile
         if len(pygame.sprite.spritecollide(self,allProjectile,True)):
 
@@ -50,5 +51,19 @@ class Monster(pygame.sprite.Sprite):
             self.idleAnimation(75)
 
         else:
-            #Idle animation
-            self.idleAnimation(500)
+            #Mouvement du monstre à partir du moment où il est à moins de 500 pixels ou quand il est blessé
+            if abs(self.rect.x-playerRect.x)>500 and self.life == 30:
+                #Idle animation
+                self.idleAnimation(500)
+            else:
+                #Mouvement du monstre vers le joueur avec l'image dans le bon sens vers le joueur
+                if self.rect.x<playerRect.x:
+                    self.rect.x += 2
+                    if not self.isFlipp:
+                        self.image = pygame.transform.flip(self.image,True,False)
+                        self.isFlipp = True
+                else:
+                    self.rect.x -= 2
+                    if self.isFlipp:
+                        self.image = pygame.transform.flip(self.image,True,False)
+                        self.isFlipp = False
