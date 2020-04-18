@@ -95,6 +95,8 @@ class Game():
         self.gameIsOver = True  #Peut être changer le nom de la variable (pas de meilleur idée pour le moment)
 
     def HUDRender(self,screen):
+        #Rectangle afin d'afficher la vie du joueur
         pygame.draw.rect(screen,self.color,pygame.Rect(40,10,self.player.life,20))
+        #Texte en complément
         screen.blit(self.font.render(str(self.player.life),False,self.color),(55+self.player.life,8))
         
