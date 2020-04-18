@@ -2,6 +2,12 @@ import PLAYER,PLATEFORME,LEVEL,DOOR,pygame
 class Game():
     """Classe permettant de gêrer les différents élements du jeu"""
     def __init__(self,screenWidth):
+        #Ajout d'une couleur pour le HUD
+        self.color = (249,177,31)
+        
+        #Ajout d'une police pour écricre du texte
+        self.font = pygame.font.SysFont("arial",22)
+        
         #Création de la variable pour le Game Over
         self.gameIsOver = False
 
@@ -87,3 +93,8 @@ class Game():
     def gameOver(self):
         #Fonction permettant de gêrer un Game Over et de redémarrer le jeu si le joueur n'a plus de vie.
         self.gameIsOver = True  #Peut être changer le nom de la variable (pas de meilleur idée pour le moment)
+
+    def HUDRender(self,screen):
+        pygame.draw.rect(screen,self.color,pygame.Rect(40,10,self.player.life,20))
+        screen.blit(self.font.render(str(self.player.life),False,self.color),(55+self.player.life,8))
+        
