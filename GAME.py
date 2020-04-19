@@ -5,8 +5,9 @@ class Game():
         #Ajout d'une couleur pour le HUD
         self.color = (249,177,31)
         
-        #Ajout d'une police pour écricre du texte
-        self.font = pygame.font.SysFont("arial",22)
+        #Ajout des policse pour écricre du texte
+        self.HUDFont = pygame.font.SysFont("arial",22)
+        self.tutoFont = pygame.font.SysFont("arial",50)
         
         #Création de la variable pour le Game Over
         self.gameIsOver = False
@@ -53,6 +54,30 @@ class Game():
             screen.blit(image,(0,0))
             pygame.display.flip()
 
+    
+    def tutorial(self,screen):
+        #Les différentes touches à apprendre
+        tutoPhrases = [["Press 'D' to go right",pygame.K_d],["Press 'Q' to go left",pygame.K_a],["Press 'Space' to jump",pygame.K_SPACE]]
+        
+        for loop in range(3):
+            #On affiche le un fond noir pour effacer le message
+            screen.fill((0,0,0))
+            pygame.display.flip()
+            
+            #Création d'un évenement vide
+            event = pygame.event.Event(0)
+            event.key = 0
+
+            #Affichage du texte du tutoriel
+            screen.blit(self.tutoFont.render(tutoPhrases[loop][0],False,(255,255,255)),(300,200))
+            pygame.display.flip()
+            
+            #On attend que le joueur appuit sur la touche qui sert à faire l'action décrite dans le jeu
+            while event.key != tutoPhrases[loop][1]:
+                event = pygame.event.wait()
+                if event.type != pygame.KEYDOWN:
+                    event = pygame.event.Event(0)
+                    event.key = 0
 
     def update(self,screen):
         if self.player.life <= 0:
@@ -98,5 +123,5 @@ class Game():
         #Rectangle afin d'afficher la vie du joueur
         pygame.draw.rect(screen,self.color,pygame.Rect(40,10,self.player.life,20))
         #Texte en complément
-        screen.blit(self.font.render(str(self.player.life),False,self.color),(55+self.player.life,8))
+        screen.blit(self.HUDFont.render(str(self.player.life),False,self.color),(55+self.player.life,8))
         

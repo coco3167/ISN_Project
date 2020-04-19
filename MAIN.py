@@ -18,6 +18,9 @@ game = GAME.Game(screenWidth)
 game.titleScreen(screen)
 game.changeLevel(0,-1,screen)
 
+#On apprend au joueur les touches
+game.tutorial(screen)
+
 #Boucle principale
 while not done:
     #Input du joueur
