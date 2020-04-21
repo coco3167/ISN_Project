@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
         #Largeur de l'écran
         self.screenWidth = screenWidth
 
-        #Le sens correspond à si le player regarde à droite ou à gauche
+        #Le sens correspond à si le player regarde à droite ou à gaucherd
         self.sens = 1
 
         #Variable pour la position et le rectangle de collision
