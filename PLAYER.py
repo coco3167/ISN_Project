@@ -9,7 +9,35 @@ class Player(pygame.sprite.Sprite):
         self.images = (
                         (pygame.image.load('assets/player/player1.png')),
                         (pygame.image.load('assets/player/player2.png')),
-                      )
+                    )
+        self.imageNormale = (
+                        (pygame.image.load('assets/player/player1.png')),
+                        (pygame.image.load('assets/player/player2.png')),
+                    )
+        self.imageSaut = (
+                            (pygame.image.load('assets/player/player5.png')),
+                            (pygame.image.load('assets/player/player5.png')),
+                        )
+        self.imagesMarche = (
+                                (pygame.image.load('assets/player/player3.png')),
+                                (pygame.image.load('assets/player/player2.png')),
+                                (pygame.image.load('assets/player/player4.png')),
+                                (pygame.image.load('assets/player/player2.png')),
+                            )
+        self.imageTire = (
+                            (pygame.image.load('assets/player/player6.png')),
+                            (pygame.image.load('assets/player/player6.png')),
+                        )
+        self.imageAccroupi = (
+                                (pygame.image.load('assets/player/player7.png')),
+                                (pygame.image.load('assets/player/player7.png')),
+                            )
+        self.imagesAccroupiMarche = (
+                                (pygame.image.load('assets/player/player8.png')),
+                                (pygame.image.load('assets/player/player7.png')),
+                                (pygame.image.load('assets/player/player9.png')),
+                                (pygame.image.load('assets/player/player7.png')),
+                            )
         self.imageIndex = 0
         self.image = self.images[self.imageIndex]
 
@@ -86,6 +114,7 @@ class Player(pygame.sprite.Sprite):
             self.t = 0
 
     def launchProjectile(self):
+        self.images = self.imageTire
         self.allProjectile.add(PROJECTILE.Projectile(self.rect.x + (self.rect.width/2),self.rect.y,self.sens))
 
     def inertie(self):
@@ -119,11 +148,13 @@ class Player(pygame.sprite.Sprite):
                 if self.vector.y > 0:
                     self.rect.y = plateforme.rect.y - self.rect.height
                     self.onPlateforme = True
+                    self.images = self.imageNormale
                 elif self.vector.y < 0:
                     self.rect.y = plateforme.rect.y + plateforme.rect.height
                     self.isJumping = False
                     self.t = 0
                     self.vector.y = 0
+                    self.images = self.imageNormale
 
     def collisionHurt(self,allMonster):
         #Fonction pour tester la collision avec ce qui fait des dégats et les appliquer s'il y en a.
@@ -141,13 +172,13 @@ class Player(pygame.sprite.Sprite):
         #Déplacement plus lourd (lent) si en l'air
         if not(self.onPlateforme):
             self.weightLeftRight = 1.5
-
         #Calcul du vecteur y en fonction de son état et détection d'un saut.
         if not(self.onPlateforme):
             if self.isJumping:
                 self.jump()
             else:
                 self.inertie()
+            self.images = self.imageSaut
         else:
             #Saut à la prochaine actualisation
             self.isJumping = self.key["jump"]
