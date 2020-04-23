@@ -114,7 +114,6 @@ class Player(pygame.sprite.Sprite):
             self.t = 0
 
     def launchProjectile(self):
-        self.images = self.imageTire
         self.allProjectile.add(PROJECTILE.Projectile(self.rect.x + (self.rect.width/2),self.rect.y,self.sens))
 
     def inertie(self):
@@ -148,13 +147,11 @@ class Player(pygame.sprite.Sprite):
                 if self.vector.y > 0:
                     self.rect.y = plateforme.rect.y - self.rect.height
                     self.onPlateforme = True
-                    self.images = self.imageNormale
                 elif self.vector.y < 0:
                     self.rect.y = plateforme.rect.y + plateforme.rect.height
                     self.isJumping = False
                     self.t = 0
                     self.vector.y = 0
-                    self.images = self.imageNormale
 
     def collisionHurt(self,allMonster):
         #Fonction pour tester la collision avec ce qui fait des dégats et les appliquer s'il y en a.
@@ -178,7 +175,6 @@ class Player(pygame.sprite.Sprite):
                 self.jump()
             else:
                 self.inertie()
-            self.images = self.imageSaut
         else:
             #Saut à la prochaine actualisation
             self.isJumping = self.key["jump"]
