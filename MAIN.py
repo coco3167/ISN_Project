@@ -29,36 +29,20 @@ while not done:
             done = True
         #Test si une touche est appuyé
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_s:
-                game.player.images = game.player.imageAccroupi
-            elif event.key == pygame.K_a and event.key == pygame.K_s:		# 'a' pour windows et 'q' pour linux
+            if event.key == pygame.K_a:		# 'a' pour windows et 'q' pour linux
                 game.player.eventKey("left",True)
-                game.player.images = game.player.imagesAccroupiMarche
-            elif event.key == pygame.K_d and event.key == pygame.K_s:
-                game.player.eventKey("right",True)
-                game.player.images = game.player.imagesAccroupiMarche
-            elif event.key == pygame.K_a:		# 'a' pour windows et 'q' pour linux
-                game.player.eventKey("left",True)
-                game.player.images = game.player.imagesMarche
             elif event.key == pygame.K_d:
                 game.player.eventKey("right",True)
-                game.player.images = game.player.imagesMarche
             elif event.key == pygame.K_SPACE:
                 game.player.eventKey("jump",True)
-                game.player.images = game.player.imageSaut
             elif event.key == pygame.K_BACKSPACE:
                 game.player.launchProjectile()
-                game.player.images = game.player.imageTire
         #Test si une touche est relaché
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
                 game.player.eventKey("left",False)
-                game.player.images = game.player.imageNormale
             elif event.key == pygame.K_d:
                 game.player.eventKey("right",False)
-                game.player.images = game.player.imageNormale
-            elif event.key == pygame.K_s:
-                game.player.images = game.player.imageNormale
             elif event.key == pygame.K_SPACE:
                 game.player.eventKey("jump",False)
 

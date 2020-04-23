@@ -6,40 +6,17 @@ class Player(pygame.sprite.Sprite):
 
         #Variable pour l'animation
         self.time = pygame.time.get_ticks()
-        self.images = (
-                        (pygame.image.load('assets/player/player1.png')),
-                        (pygame.image.load('assets/player/player2.png')),
-                    )
-        self.imageNormale = (
-                        (pygame.image.load('assets/player/player1.png')),
-                        (pygame.image.load('assets/player/player2.png')),
-                    )
-        self.imageSaut = (
-                            (pygame.image.load('assets/player/player5.png')),
-                            (pygame.image.load('assets/player/player5.png')),
-                        )
-        self.imagesMarche = (
-                                (pygame.image.load('assets/player/player3.png')),
-                                (pygame.image.load('assets/player/player2.png')),
-                                (pygame.image.load('assets/player/player4.png')),
-                                (pygame.image.load('assets/player/player2.png')),
-                            )
-        self.imageTire = (
-                            (pygame.image.load('assets/player/player6.png')),
-                            (pygame.image.load('assets/player/player6.png')),
-                        )
-        self.imageAccroupi = (
-                                (pygame.image.load('assets/player/player7.png')),
-                                (pygame.image.load('assets/player/player7.png')),
-                            )
-        self.imagesAccroupiMarche = (
-                                (pygame.image.load('assets/player/player8.png')),
-                                (pygame.image.load('assets/player/player7.png')),
-                                (pygame.image.load('assets/player/player9.png')),
-                                (pygame.image.load('assets/player/player7.png')),
-                            )
+        self.images = {
+                        "Idle Animation" : [pygame.image.load('assets/player/player_idle_1.png'),pygame.image.load('assets/player/player_idle_2.png'),],
+                        "Walk Animation" : [pygame.image.load('assets/player/player_walk_1.png'),pygame.image.load('assets/player/player_walk_2.png'),],
+                        "Jump Animation" : [pygame.image.load('assets/player/player_jump.png'),],
+                        "Crouch Animation" : [pygame.image.load('assets/player/player_crouch_1.png'),pygame.image.load('assets/player/player_crouch_2.png'),pygame.image.load('assets/player/player_crouch_3.png'),],
+                        "Shoot Animation" : [pygame.image.load('assets/player/player_shoot.png'),],
+                    }
+
         self.imageIndex = 0
-        self.image = self.images[self.imageIndex]
+        self.imageAnimation = "Idle Animation"
+        self.image = self.images[self.imageAnimation][self.imageIndex]
 
         #Variable pour la vie
         self.life = 99
@@ -113,15 +90,16 @@ class Player(pygame.sprite.Sprite):
             self.isJumping = False
             self.t = 0
 
-    def launchProjectile(self):
-        self.allProjectile.add(PROJECTILE.Projectile(self.rect.x + (self.rect.width/2),self.rect.y,self.sens))
-
     def inertie(self):
         #Quand il tombe
         if self.vector.y > self.gravite-self.accelerationGravite:
             self.vector.y = self.gravite
         else:
             self.vector.y += self.accelerationGravite
+
+
+    def launchProjectile(self):
+        self.allProjectile.add(PROJECTILE.Projectile(self.rect.x + (self.rect.width/2),self.rect.y,self.sens))
 
 
     def collisionLeftRight(self,allPlateforme):
@@ -141,12 +119,14 @@ class Player(pygame.sprite.Sprite):
         #On teste les collisions en haut et en bas puis on déplace le joueur à l'endroit requis si il est en collision avec une plateforme (+ on test s'il est sur une plateforme pour pouvoir dire s'il peut sauter
         self.listeCollided = pygame.sprite.spritecollide(self,allPlateforme,False)
         if self.listeCollided == []:
-            self.onPlateforme = False
+            if self.vector.y != 0:
+                self.onPlateforme = False
         else:
             for plateforme in self.listeCollided:
                 if self.vector.y > 0:
                     self.rect.y = plateforme.rect.y - self.rect.height
                     self.onPlateforme = True
+                    self.vector.y = 0
                 elif self.vector.y < 0:
                     self.rect.y = plateforme.rect.y + plateforme.rect.height
                     self.isJumping = False
@@ -165,12 +145,20 @@ class Player(pygame.sprite.Sprite):
                 self.rect.x -= 100
 
 
+    def animation(self,imageAnimation,animationTime,animationLength):
+        if self.imageAnimation != imageAnimation:
+                self.imageAnimation = imageAnimation
+                self.imageIndex = 0
+        elif pygame.time.get_ticks()-self.time>=animationTime:   #Temps avant un changement de frame
+                self.imageIndex = (self.imageIndex + 1)%animationLength   #Pour ne pas dépasser l'index
+                self.time = pygame.time.get_ticks()
+
+
     def update(self,allPlateforme,allMonster):
-        #Déplacement plus lourd (lent) si en l'air
-        if not(self.onPlateforme):
-            self.weightLeftRight = 1.5
         #Calcul du vecteur y en fonction de son état et détection d'un saut.
         if not(self.onPlateforme):
+            self.weightLeftRight = 1.5  #Déplacement plus lourd (lent) si en l'air
+            
             if self.isJumping:
                 self.jump()
             else:
@@ -200,14 +188,15 @@ class Player(pygame.sprite.Sprite):
         #Test de la collision avec des dégats
         self.collisionHurt(allMonster)
 
-        #Idle animation
-        if self.vector.x != 0:
-            self.time = pygame.time.get_ticks()
-            self.imageIndex = 0
-        elif pygame.time.get_ticks()-self.time>=1000: #Temps avant un changement de frame de 1 seconde
-            self.imageIndex = (self.imageIndex + 1)%2 #Pour pas dépasser l'index
-            self.time = pygame.time.get_ticks()
-        self.image = self.images[self.imageIndex]
+        #Animation
+        if not(self.onPlateforme):
+            self.animation("Jump Animation",0,1)
+        elif self.vector.x != 0:
+            self.animation("Walk Animation",500,2)
+        else:
+            self.animation("Idle Animation",1000,2)
+        
+        self.image = self.images[self.imageAnimation][self.imageIndex]
 
         if self.sens != 1:
             self.image = pygame.transform.flip(self.image,True,False)

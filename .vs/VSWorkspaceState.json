@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\assets"
   ],
-  "SelectedNode": "\\GAME.py",
+  "SelectedNode": "\\assets\\player",
   "PreviewInSolutionExplorer": false
 }
