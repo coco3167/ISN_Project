@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
         self.time = pygame.time.get_ticks()
         self.images = {
                         "Idle Animation" : [pygame.image.load('assets/player/player_idle_1.png'),pygame.image.load('assets/player/player_idle_2.png'),],
-                        "Walk Animation" : [pygame.image.load('assets/player/player_walk_1.png'),pygame.image.load('assets/player/player_walk_2.png'),],
+                        "Walk Animation" : [pygame.image.load('assets/player/player_walk_1.png'),pygame.image.load('assets/player/player_jump.png'),pygame.image.load('assets/player/player_walk_2.png'),pygame.image.load('assets/player/player_jump.png'),],
                         "Jump Animation" : [pygame.image.load('assets/player/player_jump.png'),],
                         "Crouch Animation" : [pygame.image.load('assets/player/player_crouch_1.png'),pygame.image.load('assets/player/player_crouch_2.png'),pygame.image.load('assets/player/player_crouch_3.png'),],
                         "Shoot Animation" : [pygame.image.load('assets/player/player_shoot.png'),],
@@ -145,12 +145,13 @@ class Player(pygame.sprite.Sprite):
                 self.rect.x -= 100
 
 
-    def animation(self,imageAnimation,animationTime,animationLength):
+    def animation(self,imageAnimation,animationTime):
         if self.imageAnimation != imageAnimation:
                 self.imageAnimation = imageAnimation
                 self.imageIndex = 0
+                self.time = pygame.time.get_ticks()
         elif pygame.time.get_ticks()-self.time>=animationTime:   #Temps avant un changement de frame
-                self.imageIndex = (self.imageIndex + 1)%animationLength   #Pour ne pas dépasser l'index
+                self.imageIndex = (self.imageIndex + 1)%len(self.images[imageAnimation])   #Pour ne pas dépasser l'index
                 self.time = pygame.time.get_ticks()
 
 
@@ -190,11 +191,11 @@ class Player(pygame.sprite.Sprite):
 
         #Animation
         if not(self.onPlateforme):
-            self.animation("Jump Animation",0,1)
+            self.animation("Jump Animation",0)
         elif self.vector.x != 0:
-            self.animation("Walk Animation",500,2)
+            self.animation("Walk Animation",250)
         else:
-            self.animation("Idle Animation",1000,2)
+            self.animation("Idle Animation",1000)
         
         self.image = self.images[self.imageAnimation][self.imageIndex]
 
