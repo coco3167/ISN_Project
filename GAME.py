@@ -25,8 +25,8 @@ class Game():
 
         #Matrice avec toutes les plateforme selon les niveaux
         self.listeLevel = [
-                            ('assets/backgrounds/backgroundLevel0.png',0,[PLATEFORME.Plateforme(0,245,65,230),PLATEFORME.Plateforme(0,480,1000,1)],[DOOR.Door('Left',0,30,85,1,(31,0),screenWidth)],[]),#Level 0
-                            ('assets/backgrounds/backgroundLevel1.png',1,[PLATEFORME.Plateforme(0,425,1000,1),PLATEFORME.Plateforme(0,185,1000,1)],[DOOR.Door('Right',100,10,85,0,(939,20),screenWidth)],[(50,60),]),#Level 1
+                            ('assets/backgrounds/backgroundLevel0.png',0,[PLATEFORME.Plateforme(0,245,65,230),PLATEFORME.Plateforme(0,480,1000,1)],[DOOR.Door('Left',0,30,85,1,(30,0),screenWidth)],[]),#Level 0
+                            ('assets/backgrounds/backgroundLevel1.png',1,[PLATEFORME.Plateforme(0,425,1000,1),PLATEFORME.Plateforme(0,185,1000,1)],[DOOR.Door('Right',100,10,85,0,(930,20),screenWidth)],[(50,60),]),#Level 1
                           ]
         self.level = None
 
@@ -110,6 +110,7 @@ class Game():
         doorDestination = self.level.listeDoor[numDoorCollided]
         if numDoorCollided != -1:
             (self.player.rect.x,self.player.rect.y) = doorDestination.coordPlayer
+        self.player.onPlateforme = False
 
         #Drawing
         screen.blit(self.level.background,(0,0))
@@ -124,4 +125,3 @@ class Game():
         pygame.draw.rect(screen,self.color,pygame.Rect(40,10,self.player.life,20))
         #Texte en complément
         screen.blit(self.HUDFont.render(str(self.player.life),False,self.color),(55+self.player.life,8))
-        

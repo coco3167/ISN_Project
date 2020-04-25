@@ -4,17 +4,34 @@ class Player(pygame.sprite.Sprite):
     def __init__(self,screenWidth):
         super().__init__()
 
-        #Variable pour l'animation
+        #Mise en place de l'animation
         self.time = pygame.time.get_ticks()
         self.shootTime = 0
         self.images = {
                         "Idle Animation" : [pygame.image.load('assets/player/player_idle_1.png'),pygame.image.load('assets/player/player_idle_2.png'),],
-                        "Walk Animation" : [pygame.image.load('assets/player/player_walk_1.png'),pygame.image.load('assets/player/player_jump.png'),pygame.image.load('assets/player/player_walk_2.png'),pygame.image.load('assets/player/player_jump.png'),],
+                        "Walk Animation" : [pygame.image.load('assets/player/player_walk_1.png'),pygame.image.load('assets/player/player_walk_2.png'),],
                         "Jump Animation" : [pygame.image.load('assets/player/player_jump.png'),],
                         "Crouch Animation" : [pygame.image.load('assets/player/player_crouch_1.png'),pygame.image.load('assets/player/player_crouch_2.png'),pygame.image.load('assets/player/player_crouch_3.png'),],
                         "Shoot Animation" : [pygame.image.load('assets/player/player_shoot.png'),],
                     }
 
+        #Redimensionnement des images
+        listeRedimensionnements = {
+                                    "Idle Animation" : (57,171),
+                                    "Walk Animation" : (66,171),
+                                    "Jump Animation" : (138,147),
+                                    "Crouch Animation" : (168,96),
+                                    "Shoot Animation" : (78,171),
+                                   }
+        for keys,animations in self.images.items():
+            for loop in range(len(animations)):
+                self.images[keys][loop] = pygame.transform.scale(self.images[keys][loop],listeRedimensionnements[keys])
+
+        #Ajout d'éléments après coup pour éviter un problème de redimensionnement (pas les mêmes dimensions)
+        self.images["Walk Animation"].insert(1,self.images["Jump Animation"][0])
+        self.images["Walk Animation"].insert(3,self.images["Jump Animation"][0])
+
+        #Quelques variables pour l'animation
         self.imageIndex = 0
         self.imageAnimation = "Idle Animation"
         self.image = self.images[self.imageAnimation][self.imageIndex]
@@ -158,7 +175,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self,allPlateforme,allMonster):
         if pygame.time.get_ticks()-self.shootTime >= 1000:  #Si le joueur tire il ne bouge pas donc cette partie devient inutile
-
+            
             #Calcul du vecteur y en fonction de son état et détection d'un saut.
             if not(self.onPlateforme):
                 self.weightLeftRight = 1.5  #Déplacement plus lourd (lent) si en l'air
@@ -182,6 +199,12 @@ class Player(pygame.sprite.Sprite):
             self.mouvement()
             self.rect.x = round(self.rect.x + self.vector.x/100)
             self.collisionLeftRight(allPlateforme)
+            #Débugage : le joueur n'était pas détecté comme n'étant plus sur une plateforme si il n'en sautait pas mais ne faisait que marcher en dehors
+            if not(self.isJumping):
+                for plateforme in allPlateforme:
+                    self.onPlateforme = plateforme.rect.x<self.rect.right and plateforme.rect.right>self.rect.x and self.rect.bottom+1>plateforme.rect.y
+                    if self.onPlateforme:
+                        break
 
             #Actualisation du sens du player
             if self.key["right"]:
