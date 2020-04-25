@@ -36,7 +36,7 @@ while not done:
             elif event.key == pygame.K_SPACE:
                 game.player.eventKey("jump",True)
             elif event.key == pygame.K_BACKSPACE:
-                game.player.launchProjectile()
+                game.player.eventKey("shoot",True)
         #Test si une touche est relaché
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_a:

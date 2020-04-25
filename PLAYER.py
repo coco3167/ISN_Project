@@ -6,6 +6,7 @@ class Player(pygame.sprite.Sprite):
 
         #Variable pour l'animation
         self.time = pygame.time.get_ticks()
+        self.shootTime = 0
         self.images = {
                         "Idle Animation" : [pygame.image.load('assets/player/player_idle_1.png'),pygame.image.load('assets/player/player_idle_2.png'),],
                         "Walk Animation" : [pygame.image.load('assets/player/player_walk_1.png'),pygame.image.load('assets/player/player_jump.png'),pygame.image.load('assets/player/player_walk_2.png'),pygame.image.load('assets/player/player_jump.png'),],
@@ -33,7 +34,7 @@ class Player(pygame.sprite.Sprite):
 
         #Variables pour le mouvement
         self.vector = pygame.math.Vector2()
-        self.key = {"left":False,"right":False,"jump":False}
+        self.key = {"left":False,"right":False,"jump":False,"shoot":False}
         self.listeCollided = []
 
         #Variables pour le deplacement gauche droite
@@ -156,47 +157,56 @@ class Player(pygame.sprite.Sprite):
 
 
     def update(self,allPlateforme,allMonster):
-        #Calcul du vecteur y en fonction de son état et détection d'un saut.
-        if not(self.onPlateforme):
-            self.weightLeftRight = 1.5  #Déplacement plus lourd (lent) si en l'air
+        if pygame.time.get_ticks()-self.shootTime >= 1000:  #Si le joueur tire il ne bouge pas donc cette partie devient inutile
+
+            #Calcul du vecteur y en fonction de son état et détection d'un saut.
+            if not(self.onPlateforme):
+                self.weightLeftRight = 1.5  #Déplacement plus lourd (lent) si en l'air
             
-            if self.isJumping:
-                self.jump()
+                if self.isJumping:
+                    self.jump()
+                else:
+                    self.inertie()
             else:
-                self.inertie()
-        else:
-            #Saut à la prochaine actualisation
-            self.isJumping = self.key["jump"]
-            if self.isJumping:
-                self.onPlateforme = False
-            self.vector.y = 0
-        self.rect.y = round(self.rect.y + self.vector.y/100)
+                #Saut à la prochaine actualisation
+                self.isJumping = self.key["jump"]
+                if self.isJumping:
+                    self.onPlateforme = False
+                self.vector.y = 0
+            self.rect.y = round(self.rect.y + self.vector.y/100)
 
-        #Test des collisions
-        self.collisionUpBottom(allPlateforme)
+            #Test des collisions
+            self.collisionUpBottom(allPlateforme)
 
-        #Ici calcul du mouvement et de la collision gauche droite
-        self.mouvement()
-        self.rect.x = round(self.rect.x + self.vector.x/100)
-        self.collisionLeftRight(allPlateforme)
+            #Ici calcul du mouvement et de la collision gauche droite
+            self.mouvement()
+            self.rect.x = round(self.rect.x + self.vector.x/100)
+            self.collisionLeftRight(allPlateforme)
 
-        #Actualisation du sens du player
-        if self.key["right"]:
-            self.sens = 1
-        elif self.key["left"]:
-            self.sens = -1
+            #Actualisation du sens du player
+            if self.key["right"]:
+                self.sens = 1
+            elif self.key["left"]:
+                self.sens = -1
 
-        #Test de la collision avec des dégats
-        self.collisionHurt(allMonster)
+            #Test de la collision avec des dégats
+            self.collisionHurt(allMonster)
 
-        #Animation
-        if not(self.onPlateforme):
-            self.animation("Jump Animation",0)
-        elif self.vector.x != 0:
-            self.animation("Walk Animation",250)
-        else:
-            self.animation("Idle Animation",1000)
+            #Animation
+            if not(self.onPlateforme):
+                self.animation("Jump Animation",0)
+            elif self.vector.x != 0:
+                self.animation("Walk Animation",250)
+            else:
+                self.animation("Idle Animation",1000)
         
+         #Si le joueur est immobile et qu'il tire, on change l'image
+        if self.vector == pygame.math.Vector2() and self.key["shoot"]:
+            self.launchProjectile()
+            self.imageAnimation,self.imageIndex = "Shoot Animation",0
+            self.shootTime = pygame.time.get_ticks()
+        self.key["shoot"] = False
+
         self.image = self.images[self.imageAnimation][self.imageIndex]
 
         if self.sens != 1:
