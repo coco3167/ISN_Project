@@ -14,7 +14,7 @@ class Projectile(pygame.sprite.Sprite):
         #Son rectangle de collision
         self.rect = self.image.get_rect()
         self.sens = sens
-        self.rect.y,self.rect.x = y + 55,x + 30*self.sens - self.rect.width/2
+        self.rect.y,self.rect.x = y + 75,x + 50*self.sens - 10
 
     def update(self):
         #Déplacement du projectile

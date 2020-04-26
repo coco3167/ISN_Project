@@ -35,6 +35,7 @@ class Player(pygame.sprite.Sprite):
         self.imageIndex = 0
         self.imageAnimation = "Idle Animation"
         self.image = self.images[self.imageAnimation][self.imageIndex]
+        self.isCrouching = False
 
         #Variable pour la vie
         self.life = 99
@@ -47,7 +48,7 @@ class Player(pygame.sprite.Sprite):
 
         #Variable pour la position et le rectangle de collision
         self.rect = self.image.get_rect()
-        self.rect.x,self.rect.y = 415,200
+        self.rect.x,self.rect.y = 415,480-self.rect.height
 
         #Variables pour le mouvement
         self.vector = pygame.math.Vector2()
@@ -237,3 +238,5 @@ class Player(pygame.sprite.Sprite):
 
         #Déplacement des projectiles
         self.allProjectile.update()
+      
+        print(self.isCrouching)

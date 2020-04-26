@@ -1,7 +1,7 @@
 import pygame
 class Door():
     """Classe permettant la création de portes"""
-    def __init__(self,LeftOrRight,y,width,height,destination,coordPlayer,screenWidth):
+    def __init__(self,LeftOrRight,y,width,height,destination,coordPlayer,isPlayerCrouching,screenWidth):
         #Mur sur lequelle la porte se trouve
         if LeftOrRight == 'Left':
             x = 0
@@ -13,3 +13,5 @@ class Door():
         self.destination = destination
         #Coordonnees auquelles le joueur sera mis lorsque il passera dans l'autre niveau
         self.coordPlayer = coordPlayer
+        #Est-ce que le joueur devra s'accroupir pour aller à travers la porte
+        self.isPlayerCrouching = isPlayerCrouching

@@ -20,6 +20,7 @@ class Monster(pygame.sprite.Sprite):
 
         #Variable pour la vie
         self.life = 30
+        self.isHurt = False
 
         #Création d'uune image blanche du monster
         self.whiteImage = self.image.copy()
@@ -30,6 +31,9 @@ class Monster(pygame.sprite.Sprite):
             self.imageIndex = (self.imageIndex + 1)%2
             self.time = pygame.time.get_ticks()
             self.image = self.images[self.imageIndex]
+            if self.isFlipp:
+                self.image = pygame.transform.flip(self.image,True,False)
+            self.isHurt = False
 
     def update(self,allProjectile,playerRect):
         #Test collision monster/projectile
@@ -45,9 +49,12 @@ class Monster(pygame.sprite.Sprite):
                 self.life -= 10
                 #Effet visuel pour le montrer au joueur
                 self.image = self.whiteImage
+                if self.isFlipp:
+                    self.image = pygame.transform.flip(self.image,True,False)
                 self.time = pygame.time.get_ticks()
+                self.isHurt = True
 
-        elif self.image == self.whiteImage:
+        elif self.isHurt:
             self.idleAnimation(75)
 
         else:
